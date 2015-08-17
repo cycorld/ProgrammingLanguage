@@ -1,4 +1,4 @@
-all: 1 2 3 4 5 6
+all: 1 2 3 4
 
 1: commonGrade.cmo hw2_1.cmo
 	ocaml commonGrade.cmo hw2_1.cmo hw2_1_grade.ml

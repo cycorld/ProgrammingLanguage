@@ -23,14 +23,14 @@ let galculator (expr: exp): float =
     | MUL (e1, e2) -> (galculator_rec e1 v) *. (galculator_rec e2 v)
     | DIV (e1, e2) -> (galculator_rec e1 v) /. (galculator_rec e2 v)
     | SIGMA (a, b, e) ->
-        if (galculator_rec a) >= (galculator_rec b) then
+        if (galculator_rec a 0.0) > (galculator_rec b 0.0) then
           0.0
         else
           let next = v +. 1.0 in
           (galculator_rec e v) +.
           (galculator_rec (SIGMA (INT (int_of_float next), b, e)) next)
     | INTEGRAL (a, b, e) ->
-        if (galculator_rec a) >= (galculator_rec b) then
+        if (galculator_rec a 0.0) >= (galculator_rec b 0.0) then
           0.0
         else
           let next = v +. 0.1 in
@@ -39,5 +39,7 @@ let galculator (expr: exp): float =
   in
   match expr with
   | X -> raise ERROR
+  | SIGMA (a, _, _) -> galculator_rec expr (galculator_rec a 0.0)
+  | INTEGRAL (a, _, _) -> galculator_rec expr (galculator_rec a 0.0)
   | _ -> galculator_rec expr 0.0
 
